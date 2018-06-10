@@ -19,14 +19,24 @@ public class Trans {
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
 //		String file = "d:/temp/reqlog.xml";
-		String file = "d:/temp/reqlogs/reqlog_2018_06_03_20_52_33_682.xml";
+		String file = "K:/transXML/reqLogs/reqlog_2018_06_03_20_52_33_682.xml";
 		File xmlFile = new File(file);
-		transFile(xmlFile);
+		LogEntity fileEntity = transFile(xmlFile);
+		Result result = new Result();
+		//对日志进行过滤
+		for(Log log : fileEntity.getLogList()){
+			result.filterUserInfo(log);
+		}
 		long endTime = System.currentTimeMillis();
 		System.out.println("所用时间：" + (endTime-startTime));
 
 	}
 
+	/**
+	 * 对文件进行转换
+	 * @param xmlFile 传入的文件对象
+	 * @return 返回转换后的对象
+	 */
 	private static LogEntity transFile(File xmlFile) {
 		LogEntity logEntity = null;
 		Digester digester = new Digester();  
@@ -117,21 +127,14 @@ public class Trans {
           
        
         digester.addSetNext("xml/log", "addLog");  
-
   
         try {  
             logEntity = (LogEntity) digester.parse(xmlFile);
-            System.out.println("Trans.transFile()->logEntity.getLogList().size():" + logEntity.getLogList().size());
-            for(Log log : logEntity.getLogList()) {
-            	System.out.println(log);
-            }
            
         } catch (IOException e) {  
             e.printStackTrace();
-        	//System.err.println(e);
         } catch (SAXException e) {  
             e.printStackTrace();
-            //System.err.println(e);
         } 
         return logEntity;
 		
