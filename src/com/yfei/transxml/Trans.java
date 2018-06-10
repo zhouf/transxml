@@ -23,23 +23,23 @@ public class Trans {
 		File xmlFile = new File(file);
 		transFile(xmlFile);
 		long endTime = System.currentTimeMillis();
-		System.out.println("ËùÓÃÊ±¼ä£º" + (endTime-startTime));
+		System.out.println("æ‰€ç”¨æ—¶é—´ï¼š" + (endTime-startTime));
 
 	}
 
 	private static LogEntity transFile(File xmlFile) {
 		LogEntity logEntity = null;
 		Digester digester = new Digester();  
-        //Ö¸¶¨Ëü²»ÒªÓÃDTDÑéÖ¤XMLÎÄµµµÄºÏ·¨ĞÔ¡ª¡ªÕâÊÇÒòÎªÎÒÃÇÃ»ÓĞÎªXMLÎÄµµ¶¨ÒåDTD  
+        //æŒ‡å®šå®ƒä¸è¦ç”¨DTDéªŒè¯XMLæ–‡æ¡£çš„åˆæ³•æ€§â€”â€”è¿™æ˜¯å› ä¸ºæˆ‘ä»¬æ²¡æœ‰ä¸ºXMLæ–‡æ¡£å®šä¹‰DTD  
         digester.setValidating(false);  
-        // ´Ólibrary±êÇ©¿ªÊ¼½âÎö,²¢ĞÂ½¨Ò»¸öLibrary¶ÔÏó×öÎª¸ù¶ÔÏó  
+        // ä»libraryæ ‡ç­¾å¼€å§‹è§£æ,å¹¶æ–°å»ºä¸€ä¸ªLibraryå¯¹è±¡åšä¸ºæ ¹å¯¹è±¡  
         digester.addObjectCreate("xml", LogEntity.class);  
-        // ¸ù¾İlibrary±êÇ©ÊôĞÔÖµÉèÖÃ¶ÔÏóµÄÊôĞÔ,Ò»´Î¿ÉÒÔÉèÖÃ¶à¸öÊôĞÔ  
+        // æ ¹æ®libraryæ ‡ç­¾å±æ€§å€¼è®¾ç½®å¯¹è±¡çš„å±æ€§,ä¸€æ¬¡å¯ä»¥è®¾ç½®å¤šä¸ªå±æ€§  
         digester.addSetProperties("xml");  
-        // Ò²¿ÉÒÔÓÃÏÂÃæµÄ·½·¨£¬Ö¸¶¨propertyName  
+        // ä¹Ÿå¯ä»¥ç”¨ä¸‹é¢çš„æ–¹æ³•ï¼ŒæŒ‡å®špropertyName  
         // digester.addSetProperties("library", "name", "name");  
   
-        // -----µÚ1²ãÔªËØ¿ªÊ¼  
+        // -----ç¬¬1å±‚å…ƒç´ å¼€å§‹  
         digester.addObjectCreate("xml/log", Log.class);  
         digester.addSetProperties("xml/log");
         digester.addBeanPropertySetter("xml/log/reqUrl");
