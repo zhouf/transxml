@@ -2,8 +2,11 @@ package com.yfei.transxml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.yfei.transxml.bean.Log;
 import com.yfei.transxml.bean.Session;
 import com.yfei.transxml.bean.SysInfo;
@@ -53,14 +56,31 @@ public class Result {
 			//提取已存在的对象
 			UserInfo userInfo = userMap.get(userid);
 			userInfo.addAccessTool(type, os, logtime);
-			System.out.println("Result.filterUserInfo()->userInfo.getAccessTool().size():" + userInfo.getAccessTool().size());
 		}else{
 			//生成新对象并放入
 			UserInfo userInfo = new UserInfo(name,duty,tel);
 			userInfo.addAccessTool(type, os, logtime);
 			userMap.put(userid, userInfo);
 		}
-		System.out.println("Result.filterUserInfo()->userMap.size():" + userMap.size());
+	}
+	
+	/**
+	 * 返回userInfo对象的json字串
+	 * @return
+	 */
+	public String jsonUserInfos(){
+		if(userMap!=null && userMap.size()>0){
+//			Gson gson = new Gson();
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			List<UserInfo> userList = new ArrayList<UserInfo>();
+			for(String userid : userMap.keySet()){
+				userList.add(userMap.get(userid));
+			}
+			UserClass userInfos = new UserClass();
+			userInfos.setUserInfos(userList);
+			return gson.toJson(userInfos);
+		}
+		return "";
 	}
 
 
@@ -98,6 +118,18 @@ public class Result {
 			return "Linux";
 		}
 		return userAgent;
+	}
+	
+	class UserClass{
+		private List<UserInfo> userInfos;
+
+		public List<UserInfo> getUserInfos() {
+			return userInfos;
+		}
+
+		public void setUserInfos(List<UserInfo> userInfos) {
+			this.userInfos = userInfos;
+		}
 	}
 	
 }

@@ -27,6 +27,8 @@ public class Trans {
 		for(Log log : fileEntity.getLogList()){
 			result.filterUserInfo(log);
 		}
+		String json = result.jsonUserInfos();
+		System.out.println("Trans.main()->json:" + json);
 		long endTime = System.currentTimeMillis();
 		System.out.println("所用时间：" + (endTime-startTime));
 

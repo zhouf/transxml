@@ -29,10 +29,8 @@ public class UserInfo {
 	 * @param logtime 记录时间字串
 	 */
 	public void addAccessTool(String type,String os,String logtime){
-		System.out.println("UserInfo.addAccessTool()->type:" + type + " os:" + os + " logtime:" + logtime);
 		//为空不记录
 		if(type!=null && os!=null && logtime!=null && type.length()>0 && os.length()>0 && logtime.length()>0){
-			System.out.println("UserInfo.addAccessTool()->:ADD");
 			accessTool.add(new AccessTool(type,os,logtime));
 		}
 	}
