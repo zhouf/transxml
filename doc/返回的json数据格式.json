@@ -1,0 +1,43 @@
+数据统计分析之后回馈的json数据定义
+
+{
+    "userInfos":[   //用户信息
+        {
+            "name":"",   //用户名
+            "duty":"",    //用户职责
+            "tel":"",      //用户电话
+            "accessTool":[      //用户访问工具（PC\IPNONE\MAC\安卓等）
+                {
+                    "Type":"",     //访问工具类型
+                    "OS": "",      //操作系统
+                    "useRate":""   //工具使用频率（该频率指的是，周用量）
+                }
+            ]
+        }
+    ],
+    "useUrl":[                            //使用的URL
+        {
+            "url":"",                      //URL链接
+            "useRate":"",                 //该URL的周访问量
+            "averageResidenceTime":"",    //链接平均停留时间
+            "accessPosition":[             //访问位置
+                {
+                    "ip":"",               //访问者IP
+                    "region":""            //访问者地区（通过IP获取）
+                }
+            ]
+        }
+    ],
+    "deviceOperate":[            //设备操作(地井、门禁、通断电等)
+        {
+            "deviceType":"",      //操作的设备类型
+            "useRate":""          //设备的使用频率（周使用量）
+        }
+    ],
+    "quitPosition":[             //退出位置
+        {
+            "url":"",            //退出位置的链接地址
+            "rate":""            //该退出链接占全部突出位置的百分比
+        }
+    ]
+}
