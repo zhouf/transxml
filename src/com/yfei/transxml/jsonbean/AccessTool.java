@@ -3,13 +3,13 @@ package com.yfei.transxml.jsonbean;
 public class AccessTool {
 	private String type;
 	private String os;
-	private String logtimestr;//保留计算使用频率
+	private int useRate;//保留计算使用频率
 	
-	public AccessTool(String type, String os, String logtimestr) {
+	public AccessTool(String type, String os, int useRate) {
 		super();
 		this.type = type;
 		this.os = os;
-		this.logtimestr = logtimestr;
+		this.useRate = useRate;
 	}
 	public String getType() {
 		return type;
@@ -23,11 +23,16 @@ public class AccessTool {
 	public void setOs(String os) {
 		this.os = os;
 	}
-	public String getLogtimestr() {
-		return logtimestr;
+	public int getUseRate() {
+		return useRate;
 	}
-	public void setLogtimestr(String logtimestr) {
-		this.logtimestr = logtimestr;
+	public void setUseRate(int useRate) {
+		this.useRate = useRate;
+	}
+	
+	@Override
+	public String toString() {
+		return "AccessTool [type=" + type + ", os=" + os + ", useRate=" + useRate + "]";
 	}
 
 }
