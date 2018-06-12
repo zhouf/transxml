@@ -19,7 +19,7 @@ public class Trans {
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
 //		String file = "d:/temp/reqlog.xml";
-		String file = "D:/reqLogs/reqlog_2018_06_03_20_52_33_682.xml";
+		String file = "R:/reqLogs/reqlog_2018_06_03_20_52_33_682.xml";
 		File xmlFile = new File(file);
 		LogEntity fileEntity = transFile(xmlFile);
 		Result result = new Result();

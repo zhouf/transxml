@@ -1,8 +1,9 @@
 package com.yfei.transxml.jsonbean;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+
+import com.yfei.transxml.DateUtils;
 
 /**
  * 用户信息实体
@@ -32,7 +33,7 @@ public class UserInfo {
 	public synchronized void addAccessTool(String type,String os,String logtime){
 		//为空不记录
 		if(type!=null && os!=null && logtime!=null && type.length()>0 && os.length()>0 && logtime.length()>0){
-			if(in7days(logtime)) {
+			if(DateUtils.in7days(logtime)) {
 				System.out.println("UserInfo.addAccessTool()->type:" + type+os+logtime);
 			
 				boolean found = false;
@@ -55,26 +56,6 @@ public class UserInfo {
 					accessTool.add(new AccessTool(type, os, 1));
 				}
 			}
-		}
-	}
-	
-	/**
-	 * 检查是否是七天内的数据
-	 * @param logtime 传入的日期long类型字串
-	 * @return 如果是当前日期七天内的数据返回true
-	 */
-	private boolean in7days(String logtime) {
-		if(logtime!=null && logtime.length()>0) {
-			long day = Long.parseLong(logtime);
-			
-			Calendar markdayCal = Calendar.getInstance();
-			markdayCal.add(Calendar.DATE, -7);
-			Calendar logday = Calendar.getInstance();
-			logday.setTimeInMillis(day);
-			
-			return (markdayCal.before(logday));
-		}else {
-			return false;
 		}
 	}
 
