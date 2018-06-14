@@ -21,6 +21,7 @@ import com.yfei.transxml.jsonbean.UserInfo;
  */
 public class Result {
 
+	Gson gson;
 	private Map<String,UserInfo> userMap;
 	private Map<String,UseUrl> urlMap;
 	private Map<String,Device> devMap;
@@ -29,6 +30,8 @@ public class Result {
 		userMap = new HashMap<String,UserInfo>();
 		urlMap = new HashMap<String,UseUrl>();
 		devMap = new HashMap<String,Device>();
+		//gson = new Gson();
+		gson = new GsonBuilder().setPrettyPrinting().create();
 	}
 	
 	/**
@@ -63,15 +66,13 @@ public class Result {
 			userMap.put(userid, userInfo);
 		}
 	}
-	
+
 	/**
 	 * 返回userInfo对象的json字串
 	 * @return
 	 */
 	public String jsonUserInfos(){
 		if(userMap!=null && userMap.size()>0){
-//			Gson gson = new Gson();
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			List<UserInfo> userList = new ArrayList<UserInfo>();
 			for(String userid : userMap.keySet()){
 				userList.add(userMap.get(userid));
@@ -83,6 +84,78 @@ public class Result {
 		return "";
 	}
 
+	
+	/**
+	 * 从日志中过滤出url信息
+	 * @param log
+	 */
+	public void filterUrl(Log log){
+		String url = log.getReqUrl();
+		String logtime = log.getTimestamp();
+		String ipandport = log.getIpAndPort();
+		String ip = ipandport;
+		if(ipandport!=null && ipandport.contains(":")){
+			ip = ipandport.split(":")[0];
+		}
+		
+		if(DateUtils.in7days(logtime)){
+			//如果是七天内的数据
+			if(urlMap.containsKey(url)){
+				//已存在url
+				UseUrl useUrl = urlMap.get(url);
+				useUrl.setUseRate(useUrl.getUseRate() + 1);
+				useUrl.addIp(ip);
+			}else{
+				UseUrl useUrl = new UseUrl(url);
+				useUrl.setUseRate(1);
+				useUrl.addIp(ip);
+				
+				urlMap.put(url, useUrl);
+			}
+		}
+		
+	}
+	
+	/**
+	 * 返回useUrl对象的json信息
+	 * @return
+	 */
+	public String jsonUseUrls(){
+		if(urlMap!=null && urlMap.size()>0){
+			List<UseUrl> urlList = new ArrayList<UseUrl>();
+			for(String userid : urlMap.keySet()){
+				urlList.add(urlMap.get(userid));
+			}
+			UserClass urlInfos = new UserClass();
+			urlInfos.setUseUrl(urlList);
+			return gson.toJson(urlInfos);
+		}
+		return "";
+	}
+	
+	/**
+	 * 返回所有的json
+	 * @return
+	 */
+	public String jsonStr(){
+		UserClass userInfos = new UserClass();
+		if(userMap!=null && userMap.size()>0){
+			List<UserInfo> userList = new ArrayList<UserInfo>();
+			for(String userid : userMap.keySet()){
+				userList.add(userMap.get(userid));
+			}
+			userInfos.setUserInfos(userList);
+		}
+		if(urlMap!=null && urlMap.size()>0){
+			List<UseUrl> urlList = new ArrayList<UseUrl>();
+			for(String userid : urlMap.keySet()){
+				urlList.add(urlMap.get(userid));
+			}
+			userInfos.setUseUrl(urlList);
+		}
+		return gson.toJson(userInfos);
+	}
+	
 
 	/**
 	 * 从Agent中提取type类型
@@ -122,6 +195,7 @@ public class Result {
 	
 	class UserClass{
 		private List<UserInfo> userInfos;
+		private List<UseUrl> useUrl;
 
 		public List<UserInfo> getUserInfos() {
 			return userInfos;
@@ -130,6 +204,13 @@ public class Result {
 		public void setUserInfos(List<UserInfo> userInfos) {
 			this.userInfos = userInfos;
 		}
+
+		public List<UseUrl> getUseUrl() {
+			return useUrl;
+		}
+
+		public void setUseUrl(List<UseUrl> useUrl) {
+			this.useUrl = useUrl;
+		}
 	}
-	
 }

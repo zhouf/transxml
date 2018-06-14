@@ -14,7 +14,7 @@ public class DateUtils {
 			long day = Long.parseLong(logtime);
 			
 			Calendar markdayCal = Calendar.getInstance();
-			markdayCal.add(Calendar.DATE, -7);
+			markdayCal.add(Calendar.DATE, -14);
 			Calendar logday = Calendar.getInstance();
 			logday.setTimeInMillis(day);
 			

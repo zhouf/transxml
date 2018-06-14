@@ -26,9 +26,11 @@ public class Trans {
 		//对日志进行过滤
 		for(Log log : fileEntity.getLogList()){
 			result.filterUserInfo(log);
+			result.filterUrl(log);
 		}
-		String json = result.jsonUserInfos();
+		String json = result.jsonStr();
 		System.out.println("Trans.main()->json:" + json);
+		
 		long endTime = System.currentTimeMillis();
 		System.out.println("所用时间：" + (endTime-startTime));
 
