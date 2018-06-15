@@ -27,6 +27,7 @@ public class Trans {
 		for(Log log : fileEntity.getLogList()){
 			result.filterUserInfo(log);
 			result.filterUrl(log);
+			result.filterDevice(log);
 		}
 		String json = result.jsonStr();
 		System.out.println("Trans.main()->json:" + json);

@@ -67,22 +67,6 @@ public class Result {
 		}
 	}
 
-	/**
-	 * 返回userInfo对象的json字串
-	 * @return
-	 */
-	public String jsonUserInfos(){
-		if(userMap!=null && userMap.size()>0){
-			List<UserInfo> userList = new ArrayList<UserInfo>();
-			for(String userid : userMap.keySet()){
-				userList.add(userMap.get(userid));
-			}
-			UserClass userInfos = new UserClass();
-			userInfos.setUserInfos(userList);
-			return gson.toJson(userInfos);
-		}
-		return "";
-	}
 
 	
 	/**
@@ -117,9 +101,53 @@ public class Result {
 	}
 	
 	/**
+	 * 从日志中过滤出设备信息
+	 * @param log
+	 */
+	public void filterDevice(Log log){
+		String url = log.getReqUrl();
+		String logtime = log.getTimestamp();
+		if(DateUtils.in7days(logtime)){
+			//如果是七天内的数据，则进行统计
+			if(url!=null && url.contains("OpenDoor")){
+				String devType = "门";
+				if(devMap.containsKey(devType)){
+					//已包含
+					Device device = devMap.get(devType);
+					device.setUseRate(device.getUseRate()+1);
+				}else{
+					//未包含
+					Device device = new Device(devType,1);
+					devMap.put(devType, device);
+				}
+			}
+		}
+	}
+	
+
+	/**
+	 * 返回userInfo对象的json字串
+	 * @return
+	 */
+	@Deprecated
+	public String jsonUserInfos(){
+		if(userMap!=null && userMap.size()>0){
+			List<UserInfo> userList = new ArrayList<UserInfo>();
+			for(String userid : userMap.keySet()){
+				userList.add(userMap.get(userid));
+			}
+			UserClass userInfos = new UserClass();
+			userInfos.setUserInfos(userList);
+			return gson.toJson(userInfos);
+		}
+		return "";
+	}
+	
+	/**
 	 * 返回useUrl对象的json信息
 	 * @return
 	 */
+	@Deprecated
 	public String jsonUseUrls(){
 		if(urlMap!=null && urlMap.size()>0){
 			List<UseUrl> urlList = new ArrayList<UseUrl>();
@@ -152,6 +180,13 @@ public class Result {
 				urlList.add(urlMap.get(userid));
 			}
 			userInfos.setUseUrl(urlList);
+		}
+		if(devMap!=null && devMap.size()>0){
+			List<Device> devList = new ArrayList<Device>();
+			for(String type : devMap.keySet()){
+				devList.add(devMap.get(type));
+			}
+			userInfos.setDeviceOperate(devList);
 		}
 		return gson.toJson(userInfos);
 	}
@@ -196,6 +231,15 @@ public class Result {
 	class UserClass{
 		private List<UserInfo> userInfos;
 		private List<UseUrl> useUrl;
+		private List<Device> deviceOperate;
+
+		public List<Device> getDeviceOperate() {
+			return deviceOperate;
+		}
+
+		public void setDeviceOperate(List<Device> deviceOperate) {
+			this.deviceOperate = deviceOperate;
+		}
 
 		public List<UserInfo> getUserInfos() {
 			return userInfos;

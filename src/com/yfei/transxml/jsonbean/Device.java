@@ -1,28 +1,25 @@
 package com.yfei.transxml.jsonbean;
 
-import java.util.List;
-
 public class Device {
 
-	private String deviceid;
 	private String deviceType;
-	private List<String> logtime;
+	private Integer useRate;
+	
+	public Device(String deviceType, Integer useRate) {
+		super();
+		this.deviceType = deviceType;
+		this.useRate = useRate;
+	}
 	public String getDeviceid() {
-		return deviceid;
-	}
-	public void setDeviceid(String deviceid) {
-		this.deviceid = deviceid;
-	}
-	public String getDeviceType() {
 		return deviceType;
 	}
-	public void setDeviceType(String deviceType) {
-		this.deviceType = deviceType;
+	public void setDeviceid(String type) {
+		this.deviceType = type;
 	}
-	public List<String> getLogtime() {
-		return logtime;
+	public Integer getUseRate() {
+		return useRate;
 	}
-	public void setLogtime(List<String> logtime) {
-		this.logtime = logtime;
+	public void setUseRate(Integer useRate) {
+		this.useRate = useRate;
 	}
 }
