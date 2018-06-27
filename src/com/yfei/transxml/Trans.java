@@ -9,6 +9,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.digester3.Digester;
 import org.xml.sax.SAXException;
@@ -59,13 +61,25 @@ public class Trans {
 		List<File> retList = new ArrayList<File>();
 		File dir = new File(path);
 		File[] files = dir.listFiles();
+		Set<String> nameSet = new TreeSet<String>();
 		for (File file : files) {
 			String fname = file.getName();
 			System.out.println("Trans.getFolderFiles()->fname:" + fname);
 			// 匹配文件名并且从文件名判断是七天内的数据
-			if (fname.matches("^reqlog_[0-9_]+.xml$") && DateUtils.xmlFilein7days(fname)) {
-				retList.add(file);
+			if (fname.matches("^reqlog_[0-9_]+.xml$")){
+				nameSet.add(fname);
+				if(DateUtils.xmlFilein7days(fname)) {
+					retList.add(file);
+				}
 			}
+		}
+		
+		//如果找不到七天内的数据，则获取最近的数据文件
+		if(retList.size()==0 && nameSet.size()>0){
+			String arr[] = nameSet.toArray(new String[]{});
+			File lastFile = new File(path + "/" + arr[arr.length-1]);
+			System.out.println("Trans.getFolderFiles()->无七天内数据，最近文件lastFile:" + lastFile.getName());
+			retList.add(lastFile);
 		}
 		return retList;
 	}
